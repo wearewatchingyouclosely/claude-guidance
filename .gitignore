@@ -7,6 +7,3 @@ obj/
 # Claude session files
 /.claude/
 
-# Feedback notes are working data, not published: only the inbox's README is tracked
-_FEEDBACK/**/*.md
-!_FEEDBACK/README.md
