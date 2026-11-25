@@ -12,15 +12,25 @@ Two parts:
 
 You need a Claude account that includes Claude Code (Pro, Max, Team, Enterprise, or a Console/API account).
 
-## A1. Linux (Mint / Ubuntu)
+## A1. Linux (Debian / Ubuntu / Mint)
+Run the setup script from this folder **as yourself** (not with sudo). It shows what it would do first and changes
+nothing until you add `--apply`:
+
 ```bash
-sudo apt install git python3 python3-venv
-# VS Code: the .deb from code.visualstudio.com, or the Microsoft apt repo (not the Flatpak, which can't see serial ports and tools)
-sudo usermod -aG dialout $USER        # serial ports for ESP32 boards; log out and in again
-sudo apt remove brltty                # it grabs CH340 USB-serial ports (rule 60 §5)
+bash setup/linux-setup.sh                  # dry run: see what's missing
+bash setup/linux-setup.sh --apply          # git, python, ssh, PuTTY, VS Code + Claude Code and the viewer extensions
 ```
-Firmware toolchains (`arduino-cli`, PlatformIO, ESP-IDF, KiCad) are covered in rule 60. Install them only when a
-project needs them.
+
+Add the parts you need (they combine; `--all` is everything):
+
+| Option | Adds | Rules |
+|---|---|---|
+| `--esp32` | arduino-cli, PlatformIO, pyserial, the `dialout` group, removes `brltty` | 60 |
+| `--web` | nvm and Node LTS | 35 |
+| `--kicad` | KiCad from the official PPA | 60 §7 |
+
+It asks for your sudo password once, skips anything already set up, and is safe to run again. No esp32 core is
+installed: each project names its own (rule 60 §1). After `--esp32`, log out and back in before flashing a board.
 
 ## A1 (Windows)
 1. Run **`setup\Ninite Git Notepad PuTTY Python Python 3 Installer.exe`** and click **Yes** at the admin prompt. It
