@@ -1,0 +1,148 @@
+/* Two app styles for generated HTML pages (viewers, reports): Modern (System / Light / Dark) and Windows 95.
+   Same look as the WPF starter, scaled for the web. Set on <html>:
+     data-theme="light" | "dark"   (absent = follow the system)       Modern only
+     data-style="win95"            (absent = Modern)                  Windows 95 has its own colours; theme is ignored
+   appearance.js sets both from the viewer's saved choice. Inline this file into the generated page: output pages
+   are one self-contained file (no links, no CDN). Components use only the tokens below; add a token to every block. */
+
+/* ---------------------------------------------------------------- tokens: Modern light (default) */
+:root{
+  --bg:#f4f5f7; --panel:#fff; --ink:#1d2330; --muted:#6b7385; --line:#dde1e8;
+  --acc:#1f6feb; --acc-ink:#fff; --sel:#ff2d75;
+  --ok:#16a34a; --warn:#b45309; --bad:#dc2626; --off:#94a3b8;
+  --log-bg:#fbfcfd; --code-bg:#f4f5f7;
+  --radius:8px; --radius-s:6px;
+  --font:13px/1.4 "Segoe UI",system-ui,sans-serif; --mono:Consolas,"Cascadia Mono",monospace;
+  --shadow:0 6px 20px rgba(0,0,0,.25);
+  color-scheme:light;
+}
+/* Modern dark: when the system is dark (unless the viewer picked Light), or when the viewer picked Dark */
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]):not([data-style="win95"]){
+  --bg:#14171d; --panel:#1c2028; --ink:#e6e9ef; --muted:#9aa3b5; --line:#2c3240;
+  --acc:#5b9cff; --acc-ink:#0b1220; --ok:#4ade80; --warn:#fbbf24; --bad:#f87171; --off:#64748b;
+  --log-bg:#0f1218; --code-bg:#14171d; color-scheme:dark }}
+:root[data-theme="dark"]:not([data-style="win95"]){
+  --bg:#14171d; --panel:#1c2028; --ink:#e6e9ef; --muted:#9aa3b5; --line:#2c3240;
+  --acc:#5b9cff; --acc-ink:#0b1220; --ok:#4ade80; --warn:#fbbf24; --bad:#f87171; --off:#64748b;
+  --log-bg:#0f1218; --code-bg:#14171d; color-scheme:dark }
+/* Windows 95: grey 3D on teal. --out = raised bevel, --in = sunken bevel. */
+:root[data-style="win95"]{
+  --bg:#c0c0c0; --panel:#c0c0c0; --ink:#000; --muted:#404040; --line:#808080;
+  --acc:#000080; --acc-ink:#fff; --sel:#ff00ff;
+  --ok:#008000; --warn:#806000; --bad:#c00000; --off:#808080;
+  --log-bg:#fff; --code-bg:#fff; --desktop:#008080;
+  --radius:0; --radius-s:0;
+  --font:11px/1.35 "MS Sans Serif","Microsoft Sans Serif",Tahoma,sans-serif; --mono:"Lucida Console",Consolas,monospace;
+  --out:inset -1px -1px #0a0a0a,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf;
+  --in:inset -1px -1px #fff,inset 1px 1px #808080,inset -2px -2px #dfdfdf,inset 2px 2px #0a0a0a;
+  --shadow:4px 4px 0 rgba(0,0,0,.35);
+  color-scheme:light;
+}
+
+/* ---------------------------------------------------------------- base */
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:var(--font)}
+body{min-height:100vh;display:flex;flex-direction:column}
+button,select,input,textarea{font:inherit;color:inherit}
+a{color:var(--acc)}
+.muted{color:var(--muted)} .small{font-size:11px}
+code,.mono{font-family:var(--mono)}
+main{flex:1;padding:12px 16px;max-width:1100px;width:100%;margin:0 auto}
+
+/* ---------------------------------------------------------------- header bar */
+.appbar{height:44px;flex:none;display:flex;align-items:center;gap:10px;padding:0 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.appbar h1{font-size:14px;margin:0 12px 0 0;white-space:nowrap}
+.appbar .sp{flex:1}
+
+/* ---------------------------------------------------------------- buttons */
+.btn{border:1px solid var(--line);background:var(--bg);border-radius:var(--radius-s);padding:4px 10px;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.btn.primary,.btn.on{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.seg{display:inline-flex} .seg .btn{border-radius:0;margin-left:-1px}
+.seg .btn:first-child{border-radius:var(--radius-s) 0 0 var(--radius-s)} .seg .btn:last-child{border-radius:0 var(--radius-s) var(--radius-s) 0}
+
+/* ---------------------------------------------------------------- inputs */
+input[type=text],input[type=search],input[type=number],select,textarea{border:1px solid var(--line);background:var(--bg);border-radius:var(--radius-s);padding:4px 8px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:0}
+label.opt{display:inline-flex;align-items:center;gap:6px;margin-right:16px}
+
+/* ---------------------------------------------------------------- cards, dialogs, tabs */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;margin:0 0 12px}
+.card h2,.card h3,.card h4{margin:0 0 6px}
+.pop{position:fixed;top:52px;right:12px;z-index:20;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px 12px;width:min(340px,calc(100vw - 24px))}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--panel)}
+.tabs>*{flex:1;text-align:center;padding:9px 0;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;background:none;border-top:0;border-left:0;border-right:0}
+.tabs>.on{color:var(--ink);border-bottom-color:var(--acc);font-weight:600}
+
+/* ---------------------------------------------------------------- badges and checklist (✔ ! ✖ –) */
+.badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;padding:1px 7px;border-radius:9px;color:#fff;background:var(--off)}
+.badge.ok{background:var(--ok)} .badge.warn{background:var(--warn)} .badge.bad{background:var(--bad)} .badge.acc{background:var(--acc);color:var(--acc-ink)}
+.check{display:grid;grid-template-columns:22px 160px 1fr;gap:6px;align-items:baseline;padding:5px 8px;border-radius:var(--radius-s)}
+.check:hover{background:var(--bg)}
+.check .m{font-weight:700;text-align:center}
+.check.ok .m{color:var(--ok)} .check.warn .m{color:var(--warn)} .check.bad .m{color:var(--bad)} .check.off .m{color:var(--off)}
+.check .t{font-weight:600}
+
+/* ---------------------------------------------------------------- tables */
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--panel);font-weight:600}
+tr.act td{background:var(--acc);color:var(--acc-ink)}
+td.num{text-align:right;font-family:var(--mono)}
+.tablewrap{overflow-x:auto}
+
+/* ---------------------------------------------------------------- output log and code */
+.log{background:var(--log-bg);border:1px solid var(--line);border-radius:var(--radius-s);padding:6px 8px;font:12px/1.45 var(--mono);height:180px;overflow:auto;white-space:pre-wrap}
+.log .time{color:var(--muted)} .log .ok{color:var(--ok)} .log .warn{color:var(--warn)} .log .bad{color:var(--bad)}
+.code{background:var(--code-bg);border-radius:4px;padding:3px 6px;font:12px var(--mono);white-space:pre-wrap;word-break:break-word}
+
+/* ---------------------------------------------------------------- right-click menu (built by appearance.js ctxMenu) */
+.ctx{position:fixed;z-index:60;min-width:210px;max-width:380px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:4px;box-shadow:0 8px 28px rgba(0,0,0,.28);user-select:none}
+.ctx .it{display:flex;align-items:center;gap:8px;padding:5px 10px 5px 6px;border-radius:5px;cursor:default;white-space:nowrap}
+.ctx .it .ic{width:18px;text-align:center;flex:none;opacity:.85}
+.ctx .it .tx{flex:1;overflow:hidden;text-overflow:ellipsis}
+.ctx .it .k{color:var(--muted);font-size:11px;margin-left:18px}
+.ctx .it.act{background:var(--acc);color:var(--acc-ink)} .ctx .it.act .k{color:var(--acc-ink)}
+.ctx .it.dis{opacity:.42}
+.ctx .sep{height:1px;background:var(--line);margin:4px 6px}
+
+/* ---------------------------------------------------------------- toast ("Copied") */
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:6px 14px;border-radius:16px;font-size:12px;z-index:70;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:.92}
+
+/* ---------------------------------------------------------------- Windows 95 overrides (shapes; colours are tokens above) */
+[data-style="win95"] *{border-radius:0!important}
+[data-style="win95"] body{background:var(--desktop)}
+[data-style="win95"] .appbar{background:linear-gradient(90deg,#000080,#1084d0);color:#fff;border:0}
+[data-style="win95"] .appbar .muted{color:#dfdfdf}
+[data-style="win95"] .btn{background:#c0c0c0;color:#000;border:0;box-shadow:var(--out);padding:4px 12px}
+[data-style="win95"] .btn.primary{outline:1px solid #000;outline-offset:-1px;background:#c0c0c0;color:#000}
+[data-style="win95"] .btn.on,[data-style="win95"] .btn:active{background:#d8d8d8;color:#000;box-shadow:var(--in)}
+[data-style="win95"] .btn:focus-visible{outline:1px dotted #000;outline-offset:-4px}
+[data-style="win95"] .seg .btn{margin-left:0}
+[data-style="win95"] input[type=text],[data-style="win95"] input[type=search],[data-style="win95"] input[type=number],
+[data-style="win95"] select,[data-style="win95"] textarea{background:#fff;color:#000;border:0;box-shadow:var(--in)}
+[data-style="win95"] input[type=checkbox],[data-style="win95"] input[type=radio]{accent-color:#000080}
+[data-style="win95"] .card,[data-style="win95"] .pop{border:0;box-shadow:var(--out);background:#c0c0c0}
+[data-style="win95"] .pop{box-shadow:var(--out),var(--shadow)}
+[data-style="win95"] .tabs>*{border:0;margin:3px 1px 0;box-shadow:inset 1px 1px #fff,inset -1px 0 #0a0a0a,inset -2px 0 #808080}
+[data-style="win95"] .tabs>.on{color:#000;background:#c0c0c0;margin-top:0;font-weight:400}
+[data-style="win95"] .check:hover{background:#d8d8d8}
+[data-style="win95"] .badge{border-radius:0;font-weight:400;text-transform:none}
+[data-style="win95"] .log,[data-style="win95"] .code{border:0;box-shadow:var(--in)}
+[data-style="win95"] th{background:#c0c0c0;box-shadow:var(--out);border:0}
+[data-style="win95"] .ctx{border:0;box-shadow:var(--out),3px 3px 0 rgba(0,0,0,.35);background:#c0c0c0;padding:3px}
+[data-style="win95"] .ctx .it.act{background:#000080;color:#fff}
+[data-style="win95"] .ctx .sep{background:#808080;box-shadow:0 1px #fff;margin:3px 2px}
+[data-style="win95"] .toast{background:#ffffe1;color:#000;border:1px solid #000}
+[data-style="win95"] ::-webkit-scrollbar{width:16px;height:16px;background:#dfdfdf}
+[data-style="win95"] ::-webkit-scrollbar-thumb{background:#c0c0c0;box-shadow:var(--out)}
+
+/* ---------------------------------------------------------------- phone width: one column, no sideways page scroll */
+@media (max-width:700px){
+  main{padding:10px 16px}
+  .check{grid-template-columns:22px 1fr} .check .d{grid-column:2}
+  .appbar{overflow-x:auto}
+}

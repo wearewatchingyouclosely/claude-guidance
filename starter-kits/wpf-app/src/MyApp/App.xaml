@@ -1,0 +1,17 @@
+<Application x:Class="MyApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <!-- ThemeManager swaps the first two (palette, shapes) for the chosen style. Keep this order: [0] palette,
+             [1] shapes, [2] Theme.xaml. They're merged here, straight into the application's resources, because only
+             changes to this collection reach windows that are already open. -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Palette.Modern.xaml"/>
+                <ResourceDictionary Source="Themes/Shapes.Modern.xaml"/>
+                <ResourceDictionary Source="Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

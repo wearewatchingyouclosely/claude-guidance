@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyTitle>MyApp</AssemblyTitle>
+    <Product>MyApp</Product>
+    <!-- Shown in the header badge and the footer. -->
+    <Version>0.1.0</Version>
+    <!-- Add an icon made with make-icon.ps1: <ApplicationIcon>app.ico</ApplicationIcon> and <Resource Include="app.ico" /> -->
+  </PropertyGroup>
+
+  <!-- No NuGet packages: the exe runs on its own on any Windows 10/11 (.NET Framework 4.8 is built in). -->
+  <ItemGroup>
+    <Reference Include="System.Runtime.Serialization" />
+    <!-- Folder picker (FolderBrowserDialog) -->
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <!-- Release builds drop the portable exe in the kit/repo root, next to build.ps1. -->
+  <Target Name="CopyPortableExeToRoot" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)\..\.." />
+    <Message Importance="high" Text="Portable exe: $([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\$(TargetFileName)'))" />
+  </Target>
+
+</Project>

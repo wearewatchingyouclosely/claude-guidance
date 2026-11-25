@@ -1,0 +1,10 @@
+remark,"CSV-Import-Export"
+remark,"Date = (example)"
+remark,"Version = RSLogix 5000 v20.05"
+remark,"Owner = "
+remark,"Company = "
+0.3
+TYPE,SCOPE,NAME,DESCRIPTION,DATATYPE,SPECIFIER,ATTRIBUTES
+TAG,,L1_StartPB,"","BOOL","","(RADIX := Decimal, Constant := false, ExternalAccess := Read/Write)"
+TAG,Line1_Fill,StepRunning,"","SFC_STEP[10]","","(Constant := false, ExternalAccess := Read/Write)"
+TAG,Line2_Fill,StepRunning,"","SFC_STEP[10]","","(Constant := false, ExternalAccess := Read/Write)"

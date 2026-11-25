@@ -1,0 +1,17 @@
+#!/bin/sh
+# Blocks a commit message that names a job, quote or customer (rule 40).
+# Uses the same deny-list as pre-commit. Turn on once per clone: git config core.hooksPath .githooks
+
+list="${SCRIPTKIDDY_DENYLIST:-$HOME/.scriptkiddy-denylist.txt}"
+[ -f "$list" ] || exit 0
+tmp="${TMPDIR:-/tmp}/sk-commitmsg.$$"
+trap 'rm -f "$tmp"' EXIT
+
+tr -d '\r' < "$list" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$' > "$tmp"
+[ -s "$tmp" ] || exit 0
+
+if grep -v '^#' "$1" | grep -iF -f "$tmp" >&2; then
+    echo "STOP: the commit message contains words from the deny-list ($list). Reword it (rule 40)." >&2
+    exit 1
+fi
+exit 0

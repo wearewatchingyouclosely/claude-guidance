@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="20.05" TargetName="Line1_Fill" TargetType="Program" ContainsContext="true">
+<Controller Use="Context" Name="ExampleController">
+<Programs Use="Context">
+<Program Use="Target" Name="Line1_Fill" TestEdits="false" MainRoutineName="Logic" Disabled="false">
+<Tags>
+<Tag Name="StepRunning" TagType="Base" DataType="SFC_STEP" Dimensions="10" Constant="false" ExternalAccess="Read/Write"/>
+</Tags>
+<Routines>
+<Routine Name="Logic" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Text>
+<![CDATA[NOP();]]>
+</Text>
+</Rung>
+<Rung Number="1" Type="N">
+<Text>
+<![CDATA[XIC(L1_StartPB)XIO(L1_StopPB)OTE(L1_FillRun);]]>
+</Text>
+</Rung>
+<Rung Number="2" Type="N">
+<Text>
+<![CDATA[XIC(L1_FillRun)TON(L1_FillTimer,?,?);]]>
+</Text>
+</Rung>
+</RLLContent>
+</Routine>
+<Routine Name="Running" Type="SFC">
+<SFCContent>
+<Step ID="0" X="100" Y="40" Operand="StepRunning[0]" InitialStep="true">
+<Action ID="1" Operand="ActionRunning[0]" Qualifier="NonStored">
+<Body><STContent><Line Number="0"><![CDATA[MyPhase.StepIndex:=1000;]]></Line></STContent></Body>
+</Action>
+</Step>
+<Step ID="2" X="100" Y="200" Operand="StepRunning[1]" InitialStep="false">
+<Action ID="3" Operand="ActionRunning[1]" Qualifier="NonStored">
+<Body><STContent><Line Number="0"><![CDATA[NewStepNr:=1001;]]></Line></STContent></Body>
+</Action>
+</Step>
+<Transition ID="4" X="100" Y="120" Operand="TranRunning[0]"><Condition><STContent><Line Number="0"><![CDATA[L1_FillRun]]></Line></STContent></Condition></Transition>
+<DirectedLink FromID="0" ToID="4"/><DirectedLink FromID="4" ToID="2"/>
+</SFCContent>
+</Routine>
+</Routines>
+</Program>
+</Programs>
+</Controller>
+</RSLogix5000Content>

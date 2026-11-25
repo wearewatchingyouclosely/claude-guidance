@@ -1,0 +1,4 @@
+routine	rung	expect	comment	note	note_for
+Logic	0	NOP(	Fill logic for {U}.		
+Logic	1	XIC({L}_StartPB)	Fill runs while Start is pressed and Stop is not.		
+Logic	2	XIC({L}_FillRun)TON(	Fill timer counts while the fill runs.	Line 2 only: example of a per-program note.	Line2_Fill

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style Demo</title>
+<!-- In the kit the demo links theme.css and appearance.js so there's one copy of each.
+     A GENERATED page inlines both (<style>…</style>, <script>…</script>) so it stays one mailable file. -->
+<link rel="stylesheet" href="theme.css">
+<script src="appearance.js"></script>
+</head>
+<body>
+<header class="appbar">
+  <h1>MyApp viewer</h1>
+  <span class="muted small">generated 2026-01-15 12:00 · v0.1.0</span>
+  <span class="sp"></span>
+  <span class="seg">
+    <button class="btn" data-style-btn="modern">Modern</button>
+    <button class="btn" data-style-btn="win95">Windows 95</button>
+  </span>
+  <select id="theme" title="Theme (Modern only)">
+    <option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>
+  </select>
+</header>
+
+<main>
+  <div class="card">
+    <h3>Inputs</h3>
+    <p class="muted small">Right-click anywhere for the menu. Every menu ends with Appearance.</p>
+    <p><input type="text" value="C:\Data\Example" style="width:min(420px,100%)"> <button class="btn">Browse…</button></p>
+    <p><label class="opt"><input type="checkbox" checked> Open when done</label>
+       <label class="opt"><input type="radio" name="r" checked> Option A</label>
+       <label class="opt"><input type="radio" name="r"> Option B</label></p>
+    <p><button class="btn primary">Generate</button> <button class="btn">Cancel</button> <button class="btn" disabled>Disabled</button></p>
+  </div>
+
+  <div class="card">
+    <h3>Before you go</h3>
+    <div class="check ok"><span class="m">✔</span><span class="t">Program file</span><span class="d">found, 42 files</span></div>
+    <div class="check warn"><span class="m">!</span><span class="t">Symbols</span><span class="d">optional, not found</span></div>
+    <div class="check bad"><span class="m">✖</span><span class="t">Export folder</span><span class="d">missing: blocks the build</span></div>
+    <div class="check off"><span class="m">–</span><span class="t">Languages</span><span class="d">not used</span></div>
+  </div>
+
+  <div class="tabs"><button class="on">Details</button><button>Cross-reference</button><button>Find</button></div>
+  <div class="card" style="border-top:0">
+    <p>Badges: <span class="badge ok">done</span> <span class="badge warn">check</span> <span class="badge bad">failed</span> <span class="badge">neutral</span> <span class="badge acc">v0.1.0</span></p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Address</th><th>Symbol</th><th>Description</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">B3:40/0</td><td>START_PB</td><td>Example start pushbutton</td><td class="num">1</td></tr>
+        <tr class="act"><td class="mono">N7:10</td><td>INDEX</td><td>Selected row</td><td class="num">12</td></tr>
+        <tr><td class="mono">F20:5</td><td>SETPOINT</td><td>Example setpoint</td><td class="num">37.50</td></tr>
+      </tbody>
+    </table></div>
+    <p><span class="code">MOV N7:10 N50:6</span></p>
+  </div>
+
+  <div class="card">
+    <h3>Output</h3>
+    <div class="log"><span class="time">12:00:01</span>  Started.
+<span class="time">12:00:02</span>  <span class="ok">Built viewer.html (1.2 MB).</span>
+<span class="time">12:00:02</span>  <span class="warn">3 screens have no tags: check the export.</span>
+<span class="time">12:00:02</span>  <span class="bad">Symbol file unreadable: export it again from the source program.</span></div>
+  </div>
+</main>
+
+<script>
+const A = window.Appearance;
+function sync() {
+  document.querySelectorAll("[data-style-btn]").forEach(b => b.classList.toggle("on", b.dataset.styleBtn === A.UI.style));
+  const t = document.getElementById("theme"); t.value = A.UI.theme; t.disabled = A.UI.style === "win95";
+}
+document.querySelectorAll("[data-style-btn]").forEach(b => b.onclick = () => A.set("style", b.dataset.styleBtn));
+document.getElementById("theme").onchange = e => A.set("theme", e.target.value);
+document.addEventListener("appearance", sync); sync();
+document.querySelectorAll(".tabs>button").forEach(b => b.onclick = () => {
+  b.parentElement.querySelectorAll(".on").forEach(x => x.classList.remove("on")); b.classList.add("on"); });
+// Right-click: what's under the pointer first, then Appearance. Shift+right-click = the browser's own menu.
+document.addEventListener("contextmenu", e => {
+  if (e.shiftKey) return;
+  e.preventDefault();
+  const row = e.target.closest("tr,.check");
+  const items = row ? [{ t: "Copy row", ic: "📋", k: "Ctrl+C", on: () => A.copy(row.innerText.replace(/\s+/g, " ").trim(), "Row") }, "-"] : [];
+  A.ctxMenu(e.clientX, e.clientY, [...items, { t: "Copy link to this view", ic: "🔗", on: () => A.copy(location.href, "Link") }, "-", ...A.appearanceItems()]);
+});
+</script>
+</body>
+</html>

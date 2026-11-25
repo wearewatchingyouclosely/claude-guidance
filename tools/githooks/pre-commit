@@ -1,0 +1,45 @@
+#!/bin/sh
+# Blocks a commit whose staged changes name a job, quote or customer (rule 40).
+#
+# The words to block live in a deny-list file OUTSIDE this repo, one word or phrase per line
+# (# starts a comment). Default: ~/.scriptkiddy-denylist.txt. Override with SCRIPTKIDDY_DENYLIST.
+# Matching is case-insensitive and on plain text, not regex.
+#
+# Also blocks e-mail addresses, except @example.com / @example.org.
+# Binary files (.docx, .xltm, .exe, images) are not checked: scrub them first (rule 40).
+#
+# Turn on once per master clone:   git config core.hooksPath .githooks
+
+list="${SCRIPTKIDDY_DENYLIST:-$HOME/.scriptkiddy-denylist.txt}"
+tmp="${TMPDIR:-/tmp}/sk-precommit.$$"
+trap 'rm -f "$tmp".*' EXIT
+
+# Added lines plus the names of added/renamed files.
+git diff --cached -U0 --no-color --diff-filter=ACMR | grep '^+' | grep -v '^+++ ' > "$tmp.added"
+git diff --cached --name-only --diff-filter=ACMR >> "$tmp.added"
+
+fail=0
+
+if [ -f "$list" ]; then
+    tr -d '\r' < "$list" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$' > "$tmp.words"
+    if [ -s "$tmp.words" ] && grep -iF -f "$tmp.words" "$tmp.added" > "$tmp.hits"; then
+        echo "STOP: staged changes contain words from the deny-list ($list):" >&2
+        sed 's/^/    /' "$tmp.hits" | head -20 >&2
+        fail=1
+    fi
+else
+    echo "WARNING: no deny-list at $list, so job and customer names were NOT checked." >&2
+    echo "         Create it (one name per line) or set SCRIPTKIDDY_DENYLIST. See rules/40." >&2
+fi
+
+if grep -oiE '[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}' "$tmp.added" \
+        | grep -viE '@example\.(com|org)$' > "$tmp.mail"; then
+    echo "STOP: staged changes contain e-mail addresses:" >&2
+    sort -u "$tmp.mail" | sed 's/^/    /' >&2
+    fail=1
+fi
+
+if [ $fail -ne 0 ]; then
+    echo "Rewrite the text (rule 40), or, only if this is a false alarm, commit with --no-verify." >&2
+fi
+exit $fail

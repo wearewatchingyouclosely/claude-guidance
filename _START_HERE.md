@@ -1,0 +1,119 @@
+# START HERE: setting up Claude Code and starting a project
+
+Script Kiddie: A script kiddie (sometimes called a skiddie or skid) is a pejorative term in cybersecurity for an unskilled, inexperienced individual who uses pre-made scripts, software, or tools. The author of this document fits this description.
+
+Two parts:
+- **Part A, once per PC:** VS Code, Git, Claude Code and the viewers.
+- **Part B, once per project:** point the project at this folder (or copy it in), then paste the kickoff prompt.
+
+---
+
+# Part A: set up the PC
+
+You need a Claude account that includes Claude Code (Pro, Max, Team, Enterprise, or a Console/API account).
+
+## A1. Linux (Mint / Ubuntu)
+```bash
+sudo apt install git python3 python3-venv
+# VS Code: the .deb from code.visualstudio.com, or the Microsoft apt repo (not the Flatpak, which can't see serial ports and tools)
+sudo usermod -aG dialout $USER        # serial ports for ESP32 boards; log out and in again
+sudo apt remove brltty                # it grabs CH340 USB-serial ports (rule 60 §5)
+```
+Firmware toolchains (`arduino-cli`, PlatformIO, ESP-IDF, KiCad) are covered in rule 60. Install them only when a
+project needs them.
+
+## A1 (Windows)
+1. Run **`setup\Ninite Git Notepad PuTTY Python Python 3 Installer.exe`** and click **Yes** at the admin prompt. It
+   installs Git, Notepad++, PuTTY and Python 3 with default settings, asks no questions, and says **Done** when
+   finished. Running it again later updates them.
+   - **Check it first:** right-click → **Properties** → **Digital Signatures**. The signer must be
+     **Secure By Design Inc.** (the company behind [Ninite](https://ninite.com)). If it isn't, don't run it.
+   - The .exe holds no apps: it downloads each one from its official source.
+2. Install **VS Code** from code.visualstudio.com (the installer above doesn't include it).
+3. Optional: **LibreOffice** (opens Office files without Office) and a PDF reader.
+
+Git matters even if you don't use version control: on Windows, Claude Code runs its commands in the **Git Bash** that
+Git installs. If it can't find it, see Troubleshooting.
+
+## A2. Claude Code and the viewers
+In VS Code, install **Claude Code** (publisher **Anthropic**, `anthropic.claude-code`) and sign in. Then, from a
+terminal:
+
+```bash
+code --install-extension anthropic.claude-code
+code --install-extension shd101wyy.markdown-preview-enhanced
+code --install-extension yzhang.markdown-all-in-one
+code --install-extension bierner.markdown-mermaid
+code --install-extension tomoki1207.pdf
+code --install-extension cweijan.vscode-office
+code --install-extension mechatroner.rainbow-csv
+```
+
+| Extension | What for |
+|---|---|
+| Markdown Preview Enhanced, Markdown All in One, Mermaid | Rendered `.md` with tables and diagrams (`Ctrl+Shift+V`) |
+| vscode-pdf | PDFs in a tab |
+| Office Viewer | `.docx`/`.xlsx` read-only in a tab. It takes over `.md` files: right-click the tab → **Reopen Editor With…** → **Text Editor** → make that the default |
+| Rainbow CSV | Lines CSV columns up |
+
+Optional for firmware: **PlatformIO IDE** (`platformio.platformio-ide`) if you'd rather not use the CLI.
+
+---
+
+# Part B: start a project
+
+## B1. Decide how the project gets the rules
+- **Personal projects on this PC:** **don't copy this folder in.**
+  The project's `CLAUDE.md` points at the master, `~/Documents/scriptKiddy/claude guidance/`. That way lessons land
+  in one place.
+- **Work jobs, other PCs, or anything shared:** copy the whole folder into the project, keeping its name. Delete
+  `starter-kits/` from the copy if there's no app work.
+
+## B2. Open the project folder in VS Code
+Open the **project** folder (not this one), trust it, and open Claude Code.
+
+## B3. Paste the kickoff prompt
+Change the two lines at the top first.
+
+```text
+Kick off this project.
+
+Project: <short name, e.g. "CYD 2.4R weather display" or "Job 1234 – packaging line">
+What it is: <one or two lines: "port this sketch to LVGL", "home-server script for X", "port an old PLC program">
+
+1. Read the guidance in "~/Documents/scriptKiddy/claude guidance/" (or the copy in this project):
+   _START_HERE.md, _INDEX.md and rules/00_COMMON_RULES.md. Then read the other rules that fit this
+   project and tell me which ones you picked and why. For a personal project, also read
+   ~/.claude/MACHINES.md if it exists (machine facts, kept outside this folder).
+2. If there's no CLAUDE.md in this project, copy templates/CLAUDE.template.md here as CLAUDE.md. If there
+   is one, don't overwrite it: add the template's sections under a "Project" heading. Fill in the project
+   block from what I wrote above, delete the pointers that don't apply, and leave anything you don't know
+   as <TBD>. Don't guess.
+3. Work job only: copy templates/SOURCE_REGISTER.md and templates/OPEN_ISSUES.md into docs/ and create an
+   empty deliverables/ folder. Don't create anything until I say OK.
+4. List the files and folders already here (outside the guidance folder) by name only. Don't open them
+   yet. Ask me which are source of truth, which are WIP and which you must not open. For firmware, also
+   ask which board, core/FQBN or env, and port. For server work, which host.
+5. Don't start real work yet. Show me the filled-in CLAUDE.md and a short list of what's still <TBD>.
+```
+
+## B4. Then work normally
+Claude reads `CLAUDE.md` at the start of every session in that folder, so the kickoff is one-time. Start each task
+with a plain request. When a project teaches something worth keeping, ask Claude to **leave a note in
+`_FEEDBACK/`** (rule 00 §8). A maintainer session folds it in (`_INDEX.md` "Keeping it up to date").
+
+## Working with Claude Code: the basics
+- **Permission prompts:** read what it wants to run before you click Yes.
+- **Keep live things closed to Claude:** the live PLC project, the real library, a device's boot partition. Point
+  it at copies or dry runs (rule 00 §2, rule 30 §7).
+- **`@file`** attaches a file; selected text in the editor is visible to Claude.
+- **New conversation per topic** (the **+** button).
+- **Memory is per folder.** Lessons carry over only through this guidance folder.
+
+## Troubleshooting
+| Problem | Fix |
+|---|---|
+| Claude doesn't follow the rules | `CLAUDE.md` must be in the folder you opened, and must point at this guidance folder |
+| No serial port for a board | Rule 60 §5 (cable, `dialout`, `brltty`, BOOT button) |
+| `.md` opens in a rich editor | Office Viewer took it over; see A2 |
+| Claude Code can't find Git Bash (Windows) | Set `CLAUDE_CODE_GIT_BASH_PATH` to `bash.exe` and restart VS Code |

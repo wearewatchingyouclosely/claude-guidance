@@ -1,0 +1,7 @@
+bin/
+obj/
+*.user
+.vs/
+# The portable exe is built into the root by build.ps1. It's shipped with the kit as a demo; in a real repo it is a
+# build output (release exes go on the Releases page / release folder, see 50_BRANCHES_AND_VERSION_CONTROL.md §3).
+/MyApp.exe
