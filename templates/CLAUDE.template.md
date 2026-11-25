@@ -10,7 +10,7 @@
 Read these from `rules/` in the guidance folder: a copy inside this workspace if there is one, otherwise the folder
 registered in `~/.claude/CLAUDE.md`. Don't write its absolute path here, so this file still works if it moves:
 - `00_COMMON_RULES.md`: always.
-- `10_TIA_PORTAL_PLC_PROJECTS.md`: TIA Portal work. Also copy the TIA Portal Tool's `project-kit` from `public`.
+- `10_TIA_PORTAL_PLC_PROJECTS.md`: TIA Portal work. The tools (TIA Portal Tool, FTView Decompiler) are in `plc tools/` in the guidance folder.
 - `20_OTHER_PLC_PROJECTS.md`: other PLC/HMI platforms (incl. Rockwell Logix and AVEVA System Platform), and ports in general.
 - `21_CODESYS_PROJECTS.md`: CODESYS V3.5 projects (read 20 first).
 - `30_APP_DEVELOPMENT.md`: tool and app repos.

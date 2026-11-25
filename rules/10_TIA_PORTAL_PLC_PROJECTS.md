@@ -3,7 +3,10 @@
 Siemens S7-1200/1500 programs and WinCC HMIs built or changed in TIA Portal, including migrations from
 other platforms. The common rules (00) apply. This file adds the TIA specifics.
 
-**Go deeper:** the TIA Portal Tool's `project-kit` on its **`public` branch** holds:
+**The tool:** `TiaPortalTool.exe` is in this guidance folder's [plc tools/](../plc%20tools/README.md), with its
+requirements and full command line.
+
+**Go deeper (if you have the tool's source repo):** its `project-kit` on the **`public` branch** holds:
 - a CLAUDE.md template;
 - six agents: process expert, converter, TIA developer, HMI developer, sim/test engineer, migration reviewer;
 - `docs/LESSONS_LEARNED.md`, with the technical gotchas: hand-port defects, scaling, DCS interfaces, scan model, alarms, WinCC import rules, texts, Openness, drives, commissioning;
@@ -54,16 +57,13 @@ A package is the `import\` (and `import_hmi\`) folder of a deliverable. A good o
 - If the target project already has compile errors, list them in the README and say whether the package fixes them.
 
 ## 3. The TIA Portal Tool
-- Projects use the **release folder**: a detached worktree of the `public` branch with the release exe in its root. Never use the dev folder: its checked-out branch is tool development work.
-- Headless commands always go through the Openness-approved runner:
-  `<tool>\tools\runner\OpennessRunner.exe <tool>\TiaPortalTool.exe <command> ...`.
-  Running `TiaPortalTool.exe` with arguments directly opens only the GUI.
-- Useful commands (check the README of the version you run):
-  - `export-blocks`, `hmi-export`, `hmi-import`;
-  - `import-folder [--no-save] [--save-with-errors] [--force]`;
-  - `export-projecttexts`;
-  - `verify-folder`, `verify-export` (rung check of a hand port against the original);
-  - `lint-export` (Temp edge memory, literal timer presets, double coils).
+- **Use the released exe:** `plc tools/TiaPortalTool.exe` in this guidance folder, or a release folder (a detached
+  worktree of the tool's `public` branch, rule 50 §3) if you build it yourself. Never a dev build.
+- **Commands, requirements and the SLC converter:** [plc tools/README.md](../plc%20tools/README.md). It's taken from
+  the exe's own usage text; if the exe you have disagrees, the exe is right.
+- Older builds ran headless commands through an Openness-approved runner (`tools\runner\OpennessRunner.exe`) and had
+  `verify-export` and `lint-export`. The build in `plc tools/` mentions none of these. Check which build you're on
+  before scripting against it.
 - A new exe build needs the Openness firewall approval again. The prompt comes about 2.5 minutes after TIA starts, then a UAC prompt. If the user isn't there to approve it, skip that step and say so.
 - **A job session never edits the tool, its repo or the kit**, not even to fix a one-line bug. It writes a report folder `deliverables\YYYY-MM-DD_TOOL_<TOPIC>\README.md` (layout in section 50 §6). Until the fix is released, it works around the problem in its own deliverable and links to the report.
 

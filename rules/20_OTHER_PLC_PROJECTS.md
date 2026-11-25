@@ -31,7 +31,7 @@ Check every one of these in the original. They are the usual sources of silent b
 
 ## 3. Reading the original
 - Export the program as text: RSLogix 500 `.SLC` with its symbol file, Logix `.L5X`, PLCopen XML, or whatever the platform offers. Work from the text, never from screenshots.
-- **FTView Decompiler**, for FactoryTalk View ME plus RSLogix 500: it turns the HMI export and the `.SLC` into one self-contained HTML page. You can click screens, read the ladder with cross-references and power flow, and jump between HMI tag and rung. Use it to answer "what drives this screen object" and "where is this bit used" without the original software.
+- **FTView Decompiler** ([plc tools/](../plc%20tools/README.md) in this guidance folder: inputs, GUI and command line), for FactoryTalk View ME plus RSLogix 500: it turns the HMI export and the `.SLC` into one self-contained HTML page. You can click screens, read the ladder with cross-references and power flow, and jump between HMI tag and rung. Use it to answer "what drives this screen object" and "where is this bit used" without the original software.
 - Keep a rung lookup script (`file + rung → text`) in the job's `tools\`, so citations are quick to check.
 - PDFs: `pdftotext -layout`. State diagrams, interlock matrices and I/O pages extract badly, so read them as images.
 - **CAD-plotted PDFs often have no text layer at all** *(seen once)*: `pdftotext` and PyMuPDF `get_text()` return

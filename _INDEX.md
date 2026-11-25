@@ -21,6 +21,7 @@ The rules in `rules/` are generic. Machine and household facts are kept outside 
 | [rules/](rules/) | The rule sections, numbered. A project's `CLAUDE.md` points to the ones that apply |
 | [templates/](templates/) | Files Claude copies into a workspace and fills in |
 | [starter-kits/](starter-kits/) | WPF app, HTML page, CODESYS scripts and Logix comments kits (rules 21, 31, 32, 20 §7) |
+| [plc tools/](plc%20tools/README.md) | `TiaPortalTool.exe` and `FTViewDecompiler.exe`, with their usage (rules 10 and 20) |
 | [agents/](agents/) | ESP32/Arduino subagent definitions (rule 60) |
 | `setup/` | PC setup: `linux-setup.sh` (dry run unless `--apply`; `--esp32`, `--web`, `--kicad`; `--register-only` records this folder's path) and the Windows Ninite installer (Git, Notepad++, PuTTY, Python 3). See `_START_HERE.md` A1 |
 | [tools/githooks/](tools/githooks/) | Commit hooks that block deny-listed words and e-mail addresses (rule 40 §5) |
@@ -73,6 +74,8 @@ Lessons for the **work** set (PLC, Windows tools) should also reach the SMB mast
 note, so the Windows work copies get them. This folder doesn't sync back automatically.
 
 ## Change log
+- 2026-11-25: `plc tools/` with the TIA Portal Tool and FTView Decompiler, and a README taken from their own usage text.
+  Rule 10 §3 points there; its old command list (runner, `verify-export`, `lint-export`) didn't match the current build.
 - 2026-11-25: no fixed install path. Each PC records the guidance folder's location once in `~/.claude/CLAUDE.md`
   (the setup script, or kickoff step 0); rules, the template and the kickoff prompt say "the guidance folder".
 - 2026-11-25: `setup/linux-setup.sh`, the Linux twin of the Ninite installer, with ESP32, web and KiCad add-ons.

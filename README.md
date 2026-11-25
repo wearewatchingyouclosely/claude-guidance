@@ -8,6 +8,8 @@ guide to setting up Claude & VSCode in PC. Also relevant to linux as well, but y
 
 rules and agents to help you spend all day monitorin a chatbox instead of programming or learning anything. 
 
+`plc tools/` has the TIA Portal Tool and FTView Decompiler. How to use them: `plc tools/README.md`.
+
 
 
 ## Giving feedback
