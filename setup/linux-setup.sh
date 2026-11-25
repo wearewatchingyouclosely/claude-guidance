@@ -11,12 +11,13 @@
 #   bash setup/linux-setup.sh --web --apply      # + Node LTS via nvm                         (rule 35)
 #   bash setup/linux-setup.sh --kicad --apply    # + KiCad from the official PPA              (rule 60 §7)
 #   bash setup/linux-setup.sh --all --apply      # everything
+#   bash setup/linux-setup.sh --register-only --apply   # only record this folder's path (no sudo); rerun after moving it
 #
 # Exit codes: 0 done (or dry run finished), 1 a step failed, 2 bad arguments or unsupported system.
 
 set -uo pipefail
 
-APPLY=0; ESP32=0; WEB=0; KICAD=0
+APPLY=0; ESP32=0; WEB=0; KICAD=0; REGISTER_ONLY=0
 NVM_VERSION="v0.40.1"
 KICAD_PPA="ppa:kicad/kicad-10.0-releases"
 EXTENSIONS=(
@@ -29,7 +30,7 @@ EXTENSIONS=(
   mechatroner.rainbow-csv
 )
 
-usage() { sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; }
 
 for arg in "$@"; do
   case "$arg" in
@@ -38,6 +39,7 @@ for arg in "$@"; do
     --web)   WEB=1 ;;
     --kicad) KICAD=1 ;;
     --all)   ESP32=1; WEB=1; KICAD=1 ;;
+    --register-only) REGISTER_ONLY=1 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $arg"; echo; usage; exit 2 ;;
   esac
@@ -69,6 +71,40 @@ fi
 . /etc/os-release 2>/dev/null || true
 echo "System: ${PRETTY_NAME:-unknown}   Mode: $([ $APPLY = 1 ] && echo APPLY || echo 'DRY RUN (add --apply to do it)')"
 echo "Parts:  base$([ $ESP32 = 1 ] && echo ' + esp32')$([ $WEB = 1 ] && echo ' + web')$([ $KICAD = 1 ] && echo ' + kicad')"
+
+# ---------------------------------------------------------------- register
+# Every Claude Code session reads ~/.claude/CLAUDE.md. Record where this folder is, so projects and rules never need a
+# fixed path (_START_HERE.md B1). The path comes from this script's own location, so a clone anywhere works.
+GUIDE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+USER_MD="$HOME/.claude/CLAUDE.md"
+register() {
+  say "Register this guidance folder in ~/.claude/CLAUDE.md"
+  if grep -qxF "Claude guidance folder: $GUIDE_DIR" "$USER_MD" 2>/dev/null; then
+    skip "registered: $GUIDE_DIR"; return 0
+  fi
+  local verb="add"; grep -qF '<!-- claude-guidance:start -->' "$USER_MD" 2>/dev/null && verb="update"
+  run "$verb the guidance path ($GUIDE_DIR)" python3 -c '
+import pathlib, re, sys
+md, path = pathlib.Path(sys.argv[1]), sys.argv[2]
+block = ("<!-- claude-guidance:start -->\n"
+         "Claude guidance folder: " + path + "\n"
+         "Rules, templates and agents live there; its feedback inbox is _FEEDBACK/. Start with _START_HERE.md.\n"
+         "<!-- claude-guidance:end -->\n")
+old = md.read_text() if md.exists() else ""
+pat = re.compile(r"<!-- claude-guidance:start -->.*?<!-- claude-guidance:end -->\n?", re.S)
+new = pat.sub(lambda m: block, old) if pat.search(old) else (old.rstrip("\n") + "\n\n" if old.strip() else "") + block
+md.parent.mkdir(parents=True, exist_ok=True)
+md.write_text(new)
+' "$USER_MD" "$GUIDE_DIR"
+}
+
+if [ $REGISTER_ONLY = 1 ]; then
+  register
+  echo
+  [ ${#FAILED[@]} -gt 0 ] && { echo "FAILED: ${FAILED[*]}"; exit 1; }
+  [ $APPLY = 1 ] && echo "Done." || echo "Dry run: run again with --apply to do it."
+  exit 0
+fi
 
 if [ $APPLY = 1 ]; then
   echo; echo "Asking for your sudo password once for the system steps..."
@@ -182,6 +218,8 @@ if [ $KICAD = 1 ]; then
     apt_install kicad
   fi
 fi
+
+register
 
 # ---------------------------------------------------------------- summary
 echo

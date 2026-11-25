@@ -7,8 +7,8 @@
 **The user:** <role>. <Port, not re-spec / new design / ...>.
 
 ## Rules that apply here
-Read these from the guidance folder `claude guidance/rules/` (a copy inside this workspace, or the master at
-`~/Documents/scriptKiddy/claude guidance/`):
+Read these from `rules/` in the guidance folder: a copy inside this workspace if there is one, otherwise the folder
+registered in `~/.claude/CLAUDE.md`. Don't write its absolute path here, so this file still works if it moves:
 - `00_COMMON_RULES.md`: always.
 - `10_TIA_PORTAL_PLC_PROJECTS.md`: TIA Portal work. Also copy the TIA Portal Tool's `project-kit` from `public`.
 - `20_OTHER_PLC_PROJECTS.md`: other PLC/HMI platforms (incl. Rockwell Logix and AVEVA System Platform), and ports in general.
@@ -19,7 +19,7 @@ Read these from the guidance folder `claude guidance/rules/` (a copy inside this
 - `32_STYLEGUIDE_HTML.md`: generated HTML pages.
 - `40_DATA_SANITIZATION.md`: anything shared beyond this job.
 - `50_BRANCHES_AND_VERSION_CONTROL.md`: any git repo.
-- `60_ESP32_ARDUINO.md`: ESP32/Arduino/PlatformIO/ESP-IDF firmware. Agents: `claude guidance/agents/`.
+- `60_ESP32_ARDUINO.md`: ESP32/Arduino/PlatformIO/ESP-IDF firmware. Agents: `agents/` in the guidance folder.
 - `70_LINUX_HOME_SERVER_AND_DEVICES.md`: Linux desktop, home server, SBCs, Android over adb.
 - `~/.claude/MACHINES.md`: this PC's machines and toolchains, if it exists (personal projects only; never copied into a workspace).
 
@@ -42,7 +42,7 @@ The rules in this file override the guidance where they differ.
 | Tools used (release folders, not dev folders) | `<path>` |
 | Board / FQBN / core or env (firmware) | `<…>` |
 | Host and SSH alias (server work) | `<…>` |
-| Guidance feedback inbox (rule 00 §8) | `~/Documents/scriptKiddy/claude guidance/_FEEDBACK/` |
+| Guidance feedback inbox (rule 00 §8) | `_FEEDBACK/` in the guidance folder |
 
 ## Sources of truth (confirm with the user, then keep in the register)
 - Behaviour: <…>

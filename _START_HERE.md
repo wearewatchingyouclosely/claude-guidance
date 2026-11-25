@@ -29,7 +29,8 @@ Add the parts you need (they combine; `--all` is everything):
 | `--web` | nvm and Node LTS | 35 |
 | `--kicad` | KiCad from the official PPA | 60 §7 |
 
-It asks for your sudo password once, skips anything already set up, and is safe to run again. No esp32 core is
+It also records where this folder is in `~/.claude/CLAUDE.md` (see B1). It asks for your sudo password once, skips
+anything already set up, and is safe to run again. No esp32 core is
 installed: each project names its own (rule 60 §1). After `--esp32`, log out and back in before flashing a board.
 
 ## A1 (Windows)
@@ -73,9 +74,13 @@ Optional for firmware: **PlatformIO IDE** (`platformio.platformio-ide`) if you'd
 # Part B: start a project
 
 ## B1. Decide how the project gets the rules
-- **Personal projects on this PC:** **don't copy this folder in.**
-  The project's `CLAUDE.md` points at the master, `~/Documents/scriptKiddy/claude guidance/`. That way lessons land
-  in one place.
+Below, **`<guidance>`** means this folder, wherever you cloned or copied it. Its name and location don't matter: each
+PC records it once, in `~/.claude/CLAUDE.md` (Windows: `%USERPROFILE%\.claude\CLAUDE.md`), which Claude Code reads in
+every session. On Linux, `setup/linux-setup.sh` writes it (`--register-only --apply` does just that step); anywhere
+else, kickoff step 0 has Claude add it. **Moved or re-cloned the folder? Register it again.** Nothing else needs editing.
+
+- **Your own projects on this PC:** **don't copy this folder in.** Projects use the registered `<guidance>`, so
+  lessons land in one place.
 - **Work jobs, other PCs, or anything shared:** copy the whole folder into the project, keeping its name. Delete
   `starter-kits/` from the copy if there's no app work.
 
@@ -91,8 +96,13 @@ Kick off this project.
 Project: <short name, e.g. "CYD 2.4R weather display" or "Job 1234 – packaging line">
 What it is: <one or two lines: "port this sketch to LVGL", "home-server script for X", "port an old PLC program">
 
-1. Read the guidance in "~/Documents/scriptKiddy/claude guidance/" (or the copy in this project):
-   _START_HERE.md, _INDEX.md and rules/00_COMMON_RULES.md. Then read the other rules that fit this
+0. Find the guidance folder: a copy inside this project if there is one, otherwise the path in
+   ~/.claude/CLAUDE.md. If neither exists, ask me where it is, then add this block to ~/.claude/CLAUDE.md
+   (create the file if needed; keep anything already in it):
+     <!-- claude-guidance:start -->
+     Claude guidance folder: <the absolute path>
+     <!-- claude-guidance:end -->
+1. In the guidance folder, read _START_HERE.md, _INDEX.md and rules/00_COMMON_RULES.md. Then read the other rules that fit this
    project and tell me which ones you picked and why. For a personal project, also read
    ~/.claude/MACHINES.md if it exists (machine facts, kept outside this folder).
 2. If there's no CLAUDE.md in this project, copy templates/CLAUDE.template.md here as CLAUDE.md. If there

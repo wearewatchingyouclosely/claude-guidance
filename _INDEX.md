@@ -22,7 +22,7 @@ The rules in `rules/` are generic. Machine and household facts are kept outside 
 | [templates/](templates/) | Files Claude copies into a workspace and fills in |
 | [starter-kits/](starter-kits/) | WPF app, HTML page, CODESYS scripts and Logix comments kits (rules 21, 31, 32, 20 §7) |
 | [agents/](agents/) | ESP32/Arduino subagent definitions (rule 60) |
-| `setup/` | PC setup: `linux-setup.sh` (dry run unless `--apply`; `--esp32`, `--web`, `--kicad`) and the Windows Ninite installer (Git, Notepad++, PuTTY, Python 3). See `_START_HERE.md` A1 |
+| `setup/` | PC setup: `linux-setup.sh` (dry run unless `--apply`; `--esp32`, `--web`, `--kicad`; `--register-only` records this folder's path) and the Windows Ninite installer (Git, Notepad++, PuTTY, Python 3). See `_START_HERE.md` A1 |
 | [tools/githooks/](tools/githooks/) | Commit hooks that block deny-listed words and e-mail addresses (rule 40 §5) |
 | [_FEEDBACK/](_FEEDBACK/) | Inbox where work sessions leave lessons; `_DONE/` for handled ones |
 
@@ -73,6 +73,8 @@ Lessons for the **work** set (PLC, Windows tools) should also reach the SMB mast
 note, so the Windows work copies get them. This folder doesn't sync back automatically.
 
 ## Change log
+- 2026-11-25: no fixed install path. Each PC records the guidance folder's location once in `~/.claude/CLAUDE.md`
+  (the setup script, or kickoff step 0); rules, the template and the kickoff prompt say "the guidance folder".
 - 2026-11-25: `setup/linux-setup.sh`, the Linux twin of the Ninite installer, with ESP32, web and KiCad add-ons.
 - 2026-11-25: removed company-specific setup before publishing.
 - 2026-11-25: this index moved from `README.md` to `_INDEX.md`; `README.md` is now a page for people.

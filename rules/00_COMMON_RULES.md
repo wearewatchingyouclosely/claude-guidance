@@ -126,8 +126,8 @@ new name.
 ## 8. Feedback for the guidance
 When a session finds something this folder gets wrong or misses (a rule that didn't work, a tool or kit that changed, a
 lesson worth keeping), **don't edit the guidance**: not the workspace copy and not the master. Leave a note instead:
-- **Where:** the feedback inbox named in the workspace's `CLAUDE.md`. Default: the master copy's `_FEEDBACK/`,
-  `~/Documents/scriptKiddy/claude guidance/_FEEDBACK/`.
+- **Where:** the feedback inbox named in the workspace's `CLAUDE.md`. Default: `_FEEDBACK/` in the master guidance
+  folder, whose path is registered in `~/.claude/CLAUDE.md` (`_START_HERE.md` B1).
   If it isn't reachable, write the note to `docs/GUIDANCE_FEEDBACK.md` in the workspace and tell the user.
 - **One file per item**, named `YYYY-MM-DD_<area>_<topic>.md` (`<area>` is `project`, `esp`, `linux` or `app`), in the format the inbox's `README.md` gives.
 - **Generic only** (section 40): no job numbers, customer, site or machine names, tags or paths. The inbox is read by
