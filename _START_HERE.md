@@ -69,6 +69,11 @@ code --install-extension mechatroner.rainbow-csv
 
 Optional for firmware: **PlatformIO IDE** (`platformio.platformio-ide`) if you'd rather not use the CLI.
 
+## A3. Skills (optional)
+[skills/](skills/README.md) has Anthropic's official skills for Word, Excel, PowerPoint and PDF files, web app
+testing, front-end design, MCP servers and writing your own skills. Install them once per PC, using the commands in
+`skills/README.md`, and every project can use them.
+
 ---
 
 # Part B: start a project

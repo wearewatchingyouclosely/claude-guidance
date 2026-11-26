@@ -23,6 +23,7 @@ The rules in `rules/` are generic. Machine and household facts are kept outside 
 | [starter-kits/](starter-kits/) | WPF app, HTML page, CODESYS scripts and Logix comments kits (rules 21, 31, 32, 20 §7) |
 | [plc tools/](plc%20tools/README.md) | `TiaPortalTool.exe` and `FTViewDecompiler.exe`, with their usage (rules 10 and 20) |
 | [agents/](agents/) | ESP32/Arduino subagent definitions (rule 60) |
+| [skills/](skills/README.md) | Anthropic's official skills, copied from upstream: docx, xlsx, pptx, pdf, webapp-testing, frontend-design, mcp-builder, skill-creator. Installed once per PC (`_START_HERE.md` A3) |
 | `setup/` | PC setup: `linux-setup.sh` (dry run unless `--apply`; `--esp32`, `--web`, `--kicad`; `--register-only` records this folder's path) and the Windows Ninite installer (Git, Notepad++, PuTTY, Python 3). See `_START_HERE.md` A1 |
 | [tools/githooks/](tools/githooks/) | Commit hooks that block deny-listed words and e-mail addresses (rule 40 §5) |
 | [_FEEDBACK/](_FEEDBACK/) | Inbox where work sessions leave lessons; `_DONE/` for handled ones |
@@ -74,6 +75,9 @@ Lessons for the **work** set (PLC, Windows tools) should also reach the SMB mast
 note, so the Windows work copies get them. This folder doesn't sync back automatically.
 
 ## Change log
+- 2026-11-26: `skills/`, eight of Anthropic's official skills from github.com/anthropics/skills (commit `e4bb5d9`),
+  with install steps (`_START_HERE.md` A3). Branded and marketing skills left out; one sample e-mail changed to
+  example.com for the commit hook.
 - 2026-11-25: `plc tools/` with the TIA Portal Tool and FTView Decompiler, and a README taken from their own usage text.
   Rule 10 §3 points there; its old command list (runner, `verify-export`, `lint-export`) didn't match the current build.
 - 2026-11-25: no fixed install path. Each PC records the guidance folder's location once in `~/.claude/CLAUDE.md`

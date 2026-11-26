@@ -8,6 +8,8 @@ guide to setting up Claude & VSCode in PC. Also relevant to linux as well, but y
 
 rules and agents to help you spend all day monitorin a chatbox instead of programming or learning anything. 
 
+`skills/` has Anthropic's official skills (Word, Excel, PowerPoint, PDF, web testing and more). Install steps are in `skills/README.md`.
+
 `plc tools/` has the TIA Portal Tool and FTView Decompiler. Ask yourr agent how to use them( `plc tools/README.md`).
 
 
